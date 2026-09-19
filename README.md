@@ -151,7 +151,7 @@ maven-web-app/
 
 Repository:
 ```text
-https://github.com/Saf1111/maven-web-app.git
+https://github.com/vishnu9188/maven-web-app-project2.git
 ```
 Jenkins pulls the latest source directly from this repository at the start of every pipeline run.
 
@@ -173,7 +173,7 @@ Produces `target/maven-web-app.war`, the deployable artifact consumed by the Doc
 ### 4️⃣ Docker — Containerization
 
 ```bash
-docker build -t safwan112/mavenwebapp:latest .
+docker build -t vishnudocker2002/maven-web-app-project2:latest .
 ```
 Packages the WAR file into a Tomcat-based image:
 ```text
@@ -185,9 +185,9 @@ Docker Image
 ### 5️⃣ Docker Hub — Image Registry
 
 ```bash
-docker push safwan112/mavenwebapp:latest
+docker push vishnudocker2002/maven-web-app-project2:latest
 ```
-Image path: `safwan112/mavenwebapp:latest`
+Image path: `vishnudocker2002/maven-web-app-project2:latest`
 
 ### 6️⃣ Kubernetes — Orchestration
 
@@ -235,7 +235,7 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/Saf1111/maven-web-app.git'
+                git 'https://github.com/vishnu9188/maven-web-app-project2.git'
             }
         }
 
@@ -247,7 +247,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t safwan112/mavenwebapp:latest .'
+                sh 'docker build -t vishnudocker2002/maven-web-app-project2:latest .'
             }
         }
 
@@ -262,7 +262,7 @@ pipeline {
                         echo "$DOCKER_PASSWORD" | docker login \
                         -u "$DOCKER_USERNAME" --password-stdin
 
-                        docker push safwan112/mavenwebapp:latest
+                        docker push vishnudocker2002/maven-web-app-project2:latest
 
                         docker logout
                     '''
@@ -293,7 +293,7 @@ pipeline {
 
 1. **Fork / clone** this repository
    ```bash
-   git clone https://github.com/Saf1111/maven-web-app.git
+   git clone https://github.com/vishnu9188/maven-web-app-project2.git
    ```
 2. **Create a Jenkins pipeline job** pointing at this repo's `Jenkinsfile`
 3. **Add Docker Hub credentials** in Jenkins as `dockerhub` (usernamePassword type)
@@ -345,7 +345,7 @@ kubectl get deployment mavenwebappdeployment \
   -o jsonpath='{.spec.template.spec.containers[*].image}'
 ```
 ```text
-safwan112/mavenwebapp:latest
+vishnudocker2002/maven-web-app-project2:latest
 ```
 
 **Access the application**
@@ -360,20 +360,21 @@ http://<LOAD-BALANCER-DNS>/maven-web-app/
 
 ## 🛠️ Troubleshooting Log
 
-> Real issue encountered and resolved during deployment — kept here as a reference for common failure modes.
+>  Common Kubernetes troubleshooting reference for the project.
 
-**Symptom:** Pods stuck in `ErrImagePull`
+**Symptom:**  Pods stuck in `ErrImagePull` or `ImagePullBackOff`
 
 **Diagnosis:**
 ```bash
 kubectl describe pod <pod-name>
+
 ```
-revealed Kubernetes was attempting to pull an incorrect image (`vinodses/mavenwebapp`) instead of the correct one (`safwan112/mavenwebapp:latest`).
+revealed Kubernetes was attempting to pull an incorrect image (`vinodses/mavenwebapp`) instead of the correct one (`vishnudocker2002/maven-web-app-project2:latest`).
 
 **Fix:**
 ```bash
 kubectl set image deployment/mavenwebappdeployment \
-  mavenwebappcontainer=safwan112/mavenwebapp:latest
+  mavenwebappcontainer=vishnudocker2002/maven-web-app-project2:latest
 ```
 
 **Result:** Both pods transitioned to `Running` within seconds.
